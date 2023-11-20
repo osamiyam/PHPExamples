@@ -38,20 +38,22 @@ function array2s($lst) {
     return $s;
 }
 
-
 $ans = map((function($x) {return $x * $x;}), [2, 3, 4]);
 puts(array2s($ans));
 $ans2 = filter((function($x) {return ($x % 2 == 0);}),[2, 3, 4]);
 puts(array2s($ans2));
 
+puts("-------------");
+
 function perm($lst) {
-    $z = $lst;
-    return
-        map(function ($x) use($lst, $z)
-        {return array_merge(
-            [$x],
-            filter(function ($y) use($x, $z) {return ($x != $y);}, $z));
-        }, $z);
+     if (count($lst) == 0) return [[]]; 
+     else return
+     append_all(
+     map(function($x) use ($lst) {
+        return
+	 map(function ($y) use ($x) {return array_merge([$x], $y);},
+	  perm(filter(function ($i) use ($x) {return ($x != $i);}, $lst)));
+     }, $lst));
 }
 
 $x = perm([1, 2, 3, 4]);
